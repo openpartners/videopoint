@@ -14,4 +14,13 @@ contract Lottery {
         manager = msg.sender;
     }
 
+    function join() payable public {
+        require(msg.value >= .1 ether);
+        players.push(msg.sender);
+        playersCounter++;
+
+        if (playersCounter >= maxPlayersNumber) {
+            //losowanie
+        }
+    }
 }
