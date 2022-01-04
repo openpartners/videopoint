@@ -35,8 +35,17 @@ contract Lottery {
         return players;
     }
 
+    function forceDrawing() public onlyManager{
+        drawWinner();
+    }
+
+    modifier onlyManager {
+        require(msg.sender == manager); //tylko manager może wywołać 
+         _; //cało
+    }
+
     function drawWinner() private {
-        uint index = randome() % players.lenght;
+        uint index = random() % players.lenght;
         uint amount = address(this).balance;
 
         address payable winner = players[index];
