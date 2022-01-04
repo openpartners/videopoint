@@ -9,6 +9,9 @@ contract Lottery {
 
     uint public maxPlayersNumber;
 
+    event PlayerJoined(address player);
+    event PlayerWon(address player, uint amount);
+
     constructor(uint maxPlayersNumber) public{
         maxPlayersNumber = maxPlayersNumber;
         manager = msg.sender;
@@ -20,10 +23,16 @@ contract Lottery {
         players.push(msg.sender);
         playersCounter++;
 
+        emit PlayerJoined(msg.sender);
+
         if (playersCounter >= maxPlayersNumber) {
             //losowanie
             drawWinner();
         }
+    }
+
+    function getPlayers() public view returns (address payable[] memory) {
+        return players;
     }
 
     function drawWinner() private {
@@ -35,6 +44,8 @@ contract Lottery {
 
         players = new address payable[](0);
         playersCounter = 0;
+
+        emit PlayerWon(winner, amount);
     }
 
     function random() private view returns (uint) {
